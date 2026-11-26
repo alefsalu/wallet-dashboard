@@ -65,3 +65,46 @@ export function useWithdrawMutation() {
     },
   });
 }
+
+export interface TransferPayload {
+  destinationWalletId: string;
+  amount: string;
+  description?: string;
+  idempotencyKey: string;
+}
+
+export async function transferApi({
+  destinationWalletId,
+  amount,
+  description,
+  idempotencyKey,
+}: TransferPayload): Promise<Transaction> {
+  const { data, error, response } = await apiClient.POST('/transfers', {
+    headers: {
+      'Idempotency-Key': idempotencyKey,
+    },
+    body: {
+      destinationWalletId,
+      amount,
+      description: description || undefined,
+    },
+  });
+
+  if (error || !data) {
+    throw parseProblemDetails(error || { status: response.status, detail: 'Falha ao processar transferência' });
+  }
+
+  return data;
+}
+
+export function useTransferMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: transferApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['wallets', 'me'] });
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
+    },
+  });
+}

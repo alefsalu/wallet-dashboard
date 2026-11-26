@@ -4,6 +4,10 @@ import { BalanceCard } from '../components/BalanceCard';
 import { RecentTransactionsWidget } from '../components/RecentTransactionsWidget';
 import { useWalletQuery, useRecentTransactionsQuery } from '@/features/wallet/api/wallet-queries';
 
+import { DepositModal } from '@/features/operations/components/DepositModal';
+import { WithdrawModal } from '@/features/operations/components/WithdrawModal';
+import { TransferModal } from '@/features/operations/components/TransferModal';
+
 export const DashboardPage: React.FC = () => {
   const { data: wallet, isLoading: isWalletLoading } = useWalletQuery();
   const { data: recentPage, isLoading: isRecentLoading } = useRecentTransactionsQuery();
@@ -33,6 +37,18 @@ export const DashboardPage: React.FC = () => {
         <RecentTransactionsWidget
           transactions={recentPage?.content}
           isLoading={isRecentLoading}
+        />
+
+        <DepositModal isOpen={depositOpen} onClose={() => setDepositOpen(false)} />
+        <WithdrawModal
+          isOpen={withdrawOpen}
+          onClose={() => setWithdrawOpen(false)}
+          currentBalance={wallet?.balance?.amount}
+        />
+        <TransferModal
+          isOpen={transferOpen}
+          onClose={() => setTransferOpen(false)}
+          currentWalletId={wallet?.id || ''}
         />
       </div>
     </AppLayout>
