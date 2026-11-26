@@ -46,11 +46,21 @@ function notifyAuthExpired(): void {
   }
 }
 
-export const API_BASE_URL =
-  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_BASE_URL) || '/api/v1';
+function getBaseUrl(): string {
+  if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+  if (typeof window !== 'undefined' && window.location?.origin && window.location.origin !== 'null') {
+    return `${window.location.origin}/api/v1`;
+  }
+  return 'http://localhost:5173/api/v1';
+}
+
+export const API_BASE_URL = getBaseUrl();
 
 export const apiClient = createClient<paths>({
   baseUrl: API_BASE_URL,
+  fetch: (req, init) => fetch(req, init),
 });
 
 async function performTokenRefresh(): Promise<string> {
