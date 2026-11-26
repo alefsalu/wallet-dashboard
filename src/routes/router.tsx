@@ -4,6 +4,8 @@ import { PublicOnlyRoute } from './PublicOnlyRoute';
 import { LoginForm } from '@/features/auth/components/LoginForm';
 import { RegisterForm } from '@/features/auth/components/RegisterForm';
 
+import { DashboardPage } from '@/features/dashboard/pages/DashboardPage';
+
 export const router = createBrowserRouter([
   {
     path: '/login',
@@ -29,7 +31,7 @@ export const router = createBrowserRouter([
     path: '/dashboard',
     element: (
       <ProtectedRoute>
-        <div>Dashboard placeholder</div>
+        <DashboardPage />
       </ProtectedRoute>
     ),
   },
