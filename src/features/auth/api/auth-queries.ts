@@ -1,15 +1,15 @@
 import { apiClient, singleFlightRefreshToken } from '@/lib/api-client';
 import { tokenStorage } from '@/lib/auth-token-storage';
-import { parseProblemDetails, type ProblemDetails } from '@/lib/rfc7807';
+import { parseProblemDetails } from '@/lib/rfc7807';
 import type { LoginInput, RegisterInput, AuthUser } from '../types';
 
 export async function loginApi(credentials: LoginInput): Promise<{ user: AuthUser; accessToken: string }> {
-  const { data, error, response } = await apiClient.POST('/auth/login', {
+  const { data, error } = await apiClient.POST('/auth/login', {
     body: credentials,
   });
 
   if (error || !data) {
-    throw parseProblemDetails(error || { status: response.status, detail: 'Falha no login' });
+    throw parseProblemDetails(error ?? { detail: 'Falha no login' });
   }
 
   tokenStorage.setAccessToken(data.accessToken);
@@ -26,12 +26,12 @@ export async function loginApi(credentials: LoginInput): Promise<{ user: AuthUse
 }
 
 export async function registerApi(data: RegisterInput): Promise<AuthUser> {
-  const { data: resData, error, response } = await apiClient.POST('/auth/register', {
+  const { data: resData, error } = await apiClient.POST('/auth/register', {
     body: data,
   });
 
   if (error || !resData) {
-    throw parseProblemDetails(error || { status: response.status, detail: 'Falha no cadastro' });
+    throw parseProblemDetails(error ?? { detail: 'Falha no cadastro' });
   }
 
   return {

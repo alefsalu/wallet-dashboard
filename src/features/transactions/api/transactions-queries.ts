@@ -7,7 +7,7 @@ export function useTransactionsQuery(page = 0, size = 20) {
   return useQuery<PageTransaction>({
     queryKey: ['transactions', { page, size }],
     queryFn: async () => {
-      const { data, error, response } = await apiClient.GET('/wallets/me/transactions', {
+      const { data, error } = await apiClient.GET('/wallets/me/transactions', {
         params: {
           query: {
             page,
@@ -17,7 +17,7 @@ export function useTransactionsQuery(page = 0, size = 20) {
       });
 
       if (error || !data) {
-        throw parseProblemDetails(error || { status: response.status, detail: 'Falha ao buscar histórico de transações' });
+        throw parseProblemDetails(error ?? { detail: 'Falha ao buscar histórico de transações' });
       }
 
       return data;

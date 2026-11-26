@@ -60,7 +60,8 @@ export const API_BASE_URL = getBaseUrl();
 
 export const apiClient = createClient<paths>({
   baseUrl: API_BASE_URL,
-  fetch: (req, init) => fetch(req, init),
+  // Late-bound so test/dev mocks (MSW) that patch globalThis.fetch are honoured.
+  fetch: (request: Request) => globalThis.fetch(request),
 });
 
 async function performTokenRefresh(): Promise<string> {

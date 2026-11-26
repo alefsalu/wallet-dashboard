@@ -9,34 +9,30 @@ export interface OperationPayload {
 }
 
 export async function depositApi({ amount, idempotencyKey }: OperationPayload): Promise<Transaction> {
-  const { data, error, response } = await apiClient.POST('/wallets/me/deposits', {
-    headers: {
-      'Idempotency-Key': idempotencyKey,
-    },
+  const { data, error } = await apiClient.POST('/wallets/me/deposits', {
+    params: { header: { 'Idempotency-Key': idempotencyKey } },
     body: {
       amount,
     },
   });
 
   if (error || !data) {
-    throw parseProblemDetails(error || { status: response.status, detail: 'Falha ao processar depósito' });
+    throw parseProblemDetails(error ?? { detail: 'Falha ao processar depósito' });
   }
 
   return data;
 }
 
 export async function withdrawApi({ amount, idempotencyKey }: OperationPayload): Promise<Transaction> {
-  const { data, error, response } = await apiClient.POST('/wallets/me/withdrawals', {
-    headers: {
-      'Idempotency-Key': idempotencyKey,
-    },
+  const { data, error } = await apiClient.POST('/wallets/me/withdrawals', {
+    params: { header: { 'Idempotency-Key': idempotencyKey } },
     body: {
       amount,
     },
   });
 
   if (error || !data) {
-    throw parseProblemDetails(error || { status: response.status, detail: 'Falha ao processar saque' });
+    throw parseProblemDetails(error ?? { detail: 'Falha ao processar saque' });
   }
 
   return data;
@@ -79,10 +75,8 @@ export async function transferApi({
   description,
   idempotencyKey,
 }: TransferPayload): Promise<Transaction> {
-  const { data, error, response } = await apiClient.POST('/transfers', {
-    headers: {
-      'Idempotency-Key': idempotencyKey,
-    },
+  const { data, error } = await apiClient.POST('/transfers', {
+    params: { header: { 'Idempotency-Key': idempotencyKey } },
     body: {
       destinationWalletId,
       amount,
@@ -91,7 +85,7 @@ export async function transferApi({
   });
 
   if (error || !data) {
-    throw parseProblemDetails(error || { status: response.status, detail: 'Falha ao processar transferência' });
+    throw parseProblemDetails(error ?? { detail: 'Falha ao processar transferência' });
   }
 
   return data;

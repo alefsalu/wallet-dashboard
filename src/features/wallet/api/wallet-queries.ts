@@ -7,9 +7,9 @@ export function useWalletQuery() {
   return useQuery<Wallet>({
     queryKey: ['wallets', 'me'],
     queryFn: async () => {
-      const { data, error, response } = await apiClient.GET('/wallets/me');
+      const { data, error } = await apiClient.GET('/wallets/me');
       if (error || !data) {
-        throw parseProblemDetails(error || { status: response.status, detail: 'Falha ao buscar carteira' });
+        throw parseProblemDetails(error ?? { detail: 'Falha ao buscar carteira' });
       }
       return data;
     },
@@ -21,7 +21,7 @@ export function useRecentTransactionsQuery() {
   return useQuery<PageTransaction>({
     queryKey: ['transactions', 'recent'],
     queryFn: async () => {
-      const { data, error, response } = await apiClient.GET('/wallets/me/transactions', {
+      const { data, error } = await apiClient.GET('/wallets/me/transactions', {
         params: {
           query: {
             page: 0,
@@ -30,7 +30,7 @@ export function useRecentTransactionsQuery() {
         },
       });
       if (error || !data) {
-        throw parseProblemDetails(error || { status: response.status, detail: 'Falha ao buscar transações recentes' });
+        throw parseProblemDetails(error ?? { detail: 'Falha ao buscar transações recentes' });
       }
       return data;
     },

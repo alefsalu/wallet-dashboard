@@ -1,3 +1,4 @@
+import type { JsonBodyType } from 'msw';
 import type { Wallet, Transaction } from '@/types/api';
 
 export const INITIAL_USER = {
@@ -37,7 +38,7 @@ class MockDatabase {
   public users = [{ ...INITIAL_USER }];
   public idempotencyCache = new Map<
     string,
-    { requestBody: string; responseStatus: number; responseData: unknown }
+    { requestBody: string; responseStatus: number; responseData: JsonBodyType }
   >();
 
   reset() {

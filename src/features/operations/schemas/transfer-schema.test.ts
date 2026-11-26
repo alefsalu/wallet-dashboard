@@ -10,7 +10,7 @@ describe('createTransferSchema', () => {
       description: 'Self transfer',
     });
     expect(result.success).toBe(false);
-    expect(result.error?.issues[0].message).toMatch(/não pode transferir para a própria carteira/i);
+    expect(result.error?.issues[0].message).toMatch(/não é permitido transferir para a própria carteira/i);
   });
 
   it('accepts valid transfer to different wallet ID', () => {

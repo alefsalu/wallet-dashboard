@@ -4,7 +4,7 @@ import type { ProblemDetails, Transaction } from '@/types/api';
 
 function createProblem(
   status: number,
-  code: string,
+  code: ProblemDetails['code'],
   title: string,
   detail: string,
   instance: string,

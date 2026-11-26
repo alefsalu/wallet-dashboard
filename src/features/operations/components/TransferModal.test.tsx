@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TransferModal } from './TransferModal';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -21,6 +21,6 @@ describe('TransferModal', () => {
     await userEvent.type(amountInput, '100.00');
     await userEvent.click(submitBtn);
 
-    expect(await screen.findByText(/não pode transferir para a própria carteira/i)).toBeInTheDocument();
+    expect(await screen.findByText(/não é permitido transferir para a própria carteira/i)).toBeInTheDocument();
   });
 });
