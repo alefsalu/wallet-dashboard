@@ -5,6 +5,7 @@ import { LoginForm } from '@/features/auth/components/LoginForm';
 import { RegisterForm } from '@/features/auth/components/RegisterForm';
 
 import { DashboardPage } from '@/features/dashboard/pages/DashboardPage';
+import { TransactionsPage } from '@/features/transactions/pages/TransactionsPage';
 
 export const router = createBrowserRouter([
   {
@@ -39,7 +40,7 @@ export const router = createBrowserRouter([
     path: '/transactions',
     element: (
       <ProtectedRoute>
-        <div>Transactions placeholder</div>
+        <TransactionsPage />
       </ProtectedRoute>
     ),
   },
